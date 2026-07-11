@@ -19,7 +19,8 @@ export const metadata: Metadata = {
   title: "One Prompt",
   description: "See what one AI instruction becomes at runtime.",
   icons: {
-    icon: "https://render.com/favicon.ico",
+    icon: [{ url: "/render-favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/render-favicon.svg",
   },
 };
 
