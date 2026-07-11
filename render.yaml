@@ -11,7 +11,7 @@ services:
     runtime: node
     region: oregon
     plan: starter
-    buildCommand: corepack enable && pnpm install && pnpm build
+    buildCommand: npm install -g pnpm@9.15.0 && pnpm install && pnpm build
     startCommand: pnpm --filter @one-prompt/web start
     healthCheckPath: /api/health
     envVars:

@@ -16,7 +16,7 @@
     "export-traces": "node --import tsx scripts/export-traces.mjs"
   },
   "engines": {
-    "node": ">=20"
+    "node": "22.x"
   },
   "packageManager": "pnpm@9.15.0",
   "devDependencies": {
