@@ -26,7 +26,7 @@ services:
       - key: DEMO_SCRIPTED_MODE
         value: "true"
       - key: NEXT_PUBLIC_GITHUB_REPO_URL
-        value: https://github.com/render-examples/one-prompt
+        value: https://github.com/ojusave/one-prompt
       - key: PRESENTER_TOKEN
         generateValue: true
       - key: INTERNAL_EVENTS_SECRET

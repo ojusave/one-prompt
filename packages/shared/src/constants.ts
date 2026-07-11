@@ -29,7 +29,7 @@ export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export const GITHUB_REPO_URL =
   process.env.NEXT_PUBLIC_GITHUB_REPO_URL ??
-  "https://github.com/render-examples/one-prompt";
+  "https://github.com/ojusave/one-prompt";
 
 export function renderSignupUrlWithUtms(
   content: string = "footer_link"
