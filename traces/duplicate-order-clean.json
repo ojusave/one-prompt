@@ -1,0 +1,344 @@
+{
+  "run": {
+    "id": "demo-clean",
+    "label": "Clean path",
+    "prompt": "Investigate why retrying this checkout workflow sometimes creates duplicate orders. Find the cause, implement a safe fix, deploy a preview, and verify the behavior.",
+    "source": "replay",
+    "status": "completed",
+    "createdAt": "2026-07-10T18:00:00.000Z",
+    "startedAt": "2026-07-10T18:00:01.000Z",
+    "completedAt": "2026-07-10T18:01:15.000Z",
+    "currentSequence": 0,
+    "result": {
+      "status": "success",
+      "title": "Duplicate-order cause identified and verified",
+      "summary": "Request-level retries repeated order creation without an idempotency guard.",
+      "cause": "Request-level retries repeated an order-creation side effect without an idempotency guard.",
+      "fix": "Separate retryable notification work and deduplicate order creation by event ID.",
+      "verification": "Repeated requests produced one order."
+    }
+  },
+  "events": [
+    {
+      "id": "evt-prompt",
+      "logicalTaskId": "prompt",
+      "dependencyIds": [],
+      "kind": "prompt",
+      "status": "succeeded",
+      "title": "Prompt received",
+      "description": "One instruction entered the system.",
+      "relativeStartMs": 0,
+      "durationMs": 400,
+      "attempt": 1,
+      "phase": "intake",
+      "lane": "main",
+      "runId": "demo-clean",
+      "sequence": 1
+    },
+    {
+      "id": "evt-plan",
+      "parentId": "evt-prompt",
+      "logicalTaskId": "plan",
+      "dependencyIds": [
+        "evt-prompt"
+      ],
+      "kind": "plan",
+      "status": "succeeded",
+      "title": "Building execution plan",
+      "description": "Decomposing the checkout investigation into inspect, reproduce, fix, deploy, and verify phases.",
+      "relativeStartMs": 500,
+      "durationMs": 2200,
+      "attempt": 1,
+      "phase": "planning",
+      "lane": "main",
+      "model": {
+        "provider": "scripted",
+        "model": "planner-v1",
+        "inputTokens": 420,
+        "outputTokens": 180
+      },
+      "runId": "demo-clean",
+      "sequence": 2
+    },
+    {
+      "id": "evt-inspect-service",
+      "parentId": "evt-plan",
+      "logicalTaskId": "inspect-service",
+      "dependencyIds": [
+        "evt-plan"
+      ],
+      "kind": "tool",
+      "status": "succeeded",
+      "title": "Inspect checkout service",
+      "description": "Reading service configuration and entry points for order creation.",
+      "relativeStartMs": 3000,
+      "durationMs": 1800,
+      "attempt": 1,
+      "phase": "investigation",
+      "lane": "main",
+      "tool": {
+        "name": "service_inspector",
+        "operation": "read_config"
+      },
+      "runId": "demo-clean",
+      "sequence": 3
+    },
+    {
+      "id": "evt-search-retry",
+      "parentId": "evt-inspect-service",
+      "logicalTaskId": "search-retry",
+      "dependencyIds": [
+        "evt-inspect-service"
+      ],
+      "kind": "search",
+      "status": "succeeded",
+      "title": "Search retry configuration",
+      "description": "Finding workflow retry policies and notification handlers.",
+      "relativeStartMs": 5000,
+      "durationMs": 2400,
+      "attempt": 1,
+      "phase": "investigation",
+      "lane": "main",
+      "tool": {
+        "name": "repo_search",
+        "operation": "grep"
+      },
+      "runId": "demo-clean",
+      "sequence": 4
+    },
+    {
+      "id": "evt-inspect-order",
+      "parentId": "evt-inspect-service",
+      "logicalTaskId": "inspect-order",
+      "dependencyIds": [
+        "evt-inspect-service"
+      ],
+      "kind": "tool",
+      "status": "succeeded",
+      "title": "Inspect order creation logic",
+      "description": "Tracing the code path that persists orders on checkout completion.",
+      "relativeStartMs": 5200,
+      "durationMs": 3200,
+      "attempt": 1,
+      "phase": "investigation",
+      "lane": "branch-a",
+      "branchId": "parallel-investigation",
+      "tool": {
+        "name": "code_reader",
+        "operation": "open_file"
+      },
+      "runId": "demo-clean",
+      "sequence": 5
+    },
+    {
+      "id": "evt-inspect-tests",
+      "parentId": "evt-inspect-service",
+      "logicalTaskId": "inspect-tests",
+      "dependencyIds": [
+        "evt-inspect-service"
+      ],
+      "kind": "tool",
+      "status": "succeeded",
+      "title": "Read relevant tests",
+      "description": "Reviewing checkout and retry test coverage.",
+      "relativeStartMs": 5400,
+      "durationMs": 2800,
+      "attempt": 1,
+      "phase": "investigation",
+      "lane": "branch-b",
+      "branchId": "parallel-investigation",
+      "tool": {
+        "name": "test_reader",
+        "operation": "list_tests"
+      },
+      "runId": "demo-clean",
+      "sequence": 6
+    },
+    {
+      "id": "evt-hypothesis",
+      "parentId": "evt-search-retry",
+      "logicalTaskId": "hypothesis",
+      "dependencyIds": [
+        "evt-search-retry",
+        "evt-inspect-order",
+        "evt-inspect-tests"
+      ],
+      "kind": "model",
+      "status": "succeeded",
+      "title": "Form hypothesis",
+      "description": "Request-level retries may repeat order creation without an idempotency guard.",
+      "relativeStartMs": 9000,
+      "durationMs": 2000,
+      "attempt": 1,
+      "phase": "analysis",
+      "lane": "main",
+      "model": {
+        "provider": "scripted",
+        "model": "analyst-v1",
+        "inputTokens": 2100,
+        "outputTokens": 340
+      },
+      "runId": "demo-clean",
+      "sequence": 7
+    },
+    {
+      "id": "evt-reproduce",
+      "parentId": "evt-hypothesis",
+      "logicalTaskId": "reproduce",
+      "dependencyIds": [
+        "evt-hypothesis"
+      ],
+      "kind": "test",
+      "status": "succeeded",
+      "title": "Reproduce duplicate-order behavior",
+      "description": "Repeating checkout with the same event ID to confirm a second order is created.",
+      "relativeStartMs": 11500,
+      "durationMs": 4500,
+      "attempt": 1,
+      "phase": "verification",
+      "lane": "main",
+      "runId": "demo-clean",
+      "sequence": 8
+    },
+    {
+      "id": "evt-propose-fix",
+      "parentId": "evt-reproduce",
+      "logicalTaskId": "propose-fix",
+      "dependencyIds": [
+        "evt-reproduce"
+      ],
+      "kind": "model",
+      "status": "succeeded",
+      "title": "Propose idempotency guard",
+      "description": "Deduplicate order creation by event ID and isolate notification retries.",
+      "relativeStartMs": 16500,
+      "durationMs": 2500,
+      "attempt": 1,
+      "phase": "fix",
+      "lane": "main",
+      "model": {
+        "provider": "scripted",
+        "model": "analyst-v1",
+        "inputTokens": 1800,
+        "outputTokens": 420
+      },
+      "runId": "demo-clean",
+      "sequence": 9
+    },
+    {
+      "id": "evt-apply-patch",
+      "parentId": "evt-propose-fix",
+      "logicalTaskId": "apply-patch",
+      "dependencyIds": [
+        "evt-propose-fix"
+      ],
+      "kind": "write",
+      "status": "succeeded",
+      "title": "Apply patch",
+      "description": "Adding idempotency key check before order persistence.",
+      "relativeStartMs": 19500,
+      "durationMs": 3000,
+      "attempt": 1,
+      "phase": "fix",
+      "lane": "main",
+      "sideEffect": {
+        "type": "repository",
+        "occurred": true,
+        "safeToRetry": true,
+        "strategy": "Branch-scoped commit"
+      },
+      "runId": "demo-clean",
+      "sequence": 10
+    },
+    {
+      "id": "evt-run-tests",
+      "parentId": "evt-apply-patch",
+      "logicalTaskId": "run-tests",
+      "dependencyIds": [
+        "evt-apply-patch"
+      ],
+      "kind": "test",
+      "status": "succeeded",
+      "title": "Run checkout tests",
+      "description": "All checkout and retry tests pass.",
+      "relativeStartMs": 23000,
+      "durationMs": 5000,
+      "attempt": 1,
+      "phase": "verification",
+      "lane": "main",
+      "runId": "demo-clean",
+      "sequence": 11
+    },
+    {
+      "id": "evt-deploy",
+      "parentId": "evt-run-tests",
+      "logicalTaskId": "deploy",
+      "dependencyIds": [
+        "evt-run-tests"
+      ],
+      "kind": "deployment",
+      "status": "succeeded",
+      "title": "Deploy preview on Render",
+      "description": "Creating preview deployment for checkout service.",
+      "relativeStartMs": 28500,
+      "durationMs": 8000,
+      "attempt": 1,
+      "phase": "deploy",
+      "lane": "main",
+      "sideEffect": {
+        "type": "deployment",
+        "occurred": true,
+        "safeToRetry": true,
+        "strategy": "Unique deployment request ID",
+        "idempotencyKey": "deploy-preview-checkout-42"
+      },
+      "deployment": {
+        "provider": "render",
+        "service": "checkout-api",
+        "environment": "preview",
+        "status": "live",
+        "url": "https://checkout-api-preview.onrender.com"
+      },
+      "runId": "demo-clean",
+      "sequence": 12
+    },
+    {
+      "id": "evt-verify",
+      "parentId": "evt-deploy",
+      "logicalTaskId": "verify",
+      "dependencyIds": [
+        "evt-deploy"
+      ],
+      "kind": "test",
+      "status": "succeeded",
+      "title": "Verify behavior",
+      "description": "Repeated requests produced one order on preview.",
+      "relativeStartMs": 37000,
+      "durationMs": 4000,
+      "attempt": 1,
+      "phase": "verification",
+      "lane": "main",
+      "runId": "demo-clean",
+      "sequence": 13
+    },
+    {
+      "id": "evt-result",
+      "parentId": "evt-verify",
+      "logicalTaskId": "result",
+      "dependencyIds": [
+        "evt-verify"
+      ],
+      "kind": "result",
+      "status": "succeeded",
+      "title": "Investigation complete",
+      "description": "Duplicate-order cause identified and verified.",
+      "relativeStartMs": 41500,
+      "durationMs": 800,
+      "attempt": 1,
+      "phase": "complete",
+      "lane": "main",
+      "runId": "demo-clean",
+      "sequence": 14
+    }
+  ]
+}

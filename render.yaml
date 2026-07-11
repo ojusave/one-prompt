@@ -1,0 +1,37 @@
+databases:
+  - name: one-prompt-db
+    plan: basic-256mb
+    region: oregon
+    databaseName: one_prompt
+    user: one_prompt
+
+services:
+  - type: web
+    name: one-prompt
+    runtime: node
+    region: oregon
+    plan: starter
+    buildCommand: corepack enable && pnpm install && pnpm build
+    startCommand: pnpm --filter @one-prompt/web start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: one-prompt-db
+          property: connectionString
+      - key: LIVE_MODE_ENABLED
+        value: "false"
+      - key: DEMO_SCRIPTED_MODE
+        value: "true"
+      - key: NEXT_PUBLIC_GITHUB_REPO_URL
+        value: https://github.com/render-examples/one-prompt
+      - key: PRESENTER_TOKEN
+        generateValue: true
+      - key: INTERNAL_EVENTS_SECRET
+        generateValue: true
+
+previews:
+  generation: manual
+  expireAfterDays: 7

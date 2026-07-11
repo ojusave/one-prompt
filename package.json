@@ -1,0 +1,25 @@
+{
+  "name": "one-prompt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "See what one AI instruction becomes at runtime.",
+  "scripts": {
+    "dev": "pnpm --filter @one-prompt/web dev",
+    "build": "pnpm --filter @one-prompt/shared build && pnpm --filter @one-prompt/web build",
+    "start": "pnpm --filter @one-prompt/web start",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter @one-prompt/web test:e2e",
+    "db:generate": "pnpm --filter @one-prompt/web db:generate",
+    "db:migrate": "pnpm --filter @one-prompt/web db:migrate",
+    "export-traces": "node --import tsx scripts/export-traces.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "devDependencies": {
+    "tsx": "^4.23.0"
+  }
+}
