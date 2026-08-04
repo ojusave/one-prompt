@@ -4,7 +4,8 @@ import { LATE_CAMERA } from "../layout/graph-layout";
 import { LATE_DURATION } from "../types";
 
 /**
- * Late failure scene beats (900 frames / 30s @ 30fps).
+ * Late failure scene beats (base timeline: 900 frames / 30s @ 30fps).
+ * Final composition runtime is extended through timingScale in video props.
  */
 export const lateFailureBeats: SceneBeat[] = [
   // Opening 0–29

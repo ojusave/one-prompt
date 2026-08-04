@@ -170,6 +170,8 @@ export const WorkflowNode: React.FC<Props> = ({
     node.id === "verify2";
 
   const opacity = dimmed && !isFocus ? 0.6 : entrance;
+  const emphasisScale =
+    state === "running" ? 1.035 : state === "entering" ? 1.015 : state === "failed" ? 1.02 : 1;
 
   const secondary =
     state === "failed" && node.id === "verify1"
@@ -186,6 +188,8 @@ export const WorkflowNode: React.FC<Props> = ({
         width: NODE_WIDTH,
         minHeight: NODE_HEIGHT,
         opacity,
+        transform: `scale(${emphasisScale})`,
+        transformOrigin: "left top",
         background,
         border: `1.5px solid ${borderColor}`,
         borderRadius: 4,

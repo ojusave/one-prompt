@@ -24,7 +24,8 @@ export const CleanPath: React.FC<OnePromptVideoProps> = (props) => {
     merged.timingScale
   );
 
-  const showGraph = frame >= 30;
+  const timelineFrame = frame / merged.timingScale;
+  const showGraph = timelineFrame >= 90;
 
   return (
     <VideoCanvas props={merged}>
@@ -42,10 +43,10 @@ export const CleanPath: React.FC<OnePromptVideoProps> = (props) => {
             zIndex: 40,
           }}
         >
-          <RenderSignature visible={merged.showRenderLogo} compact={frame >= 30} />
+          <RenderSignature visible={merged.showRenderLogo} compact={timelineFrame >= 90} />
         </div>
 
-        <PromptCard prompt={merged.prompt} frame={frame} />
+        <PromptCard prompt={merged.prompt} frame={frame} timingScale={merged.timingScale} />
 
         {showGraph ? (
           <WorkflowGraph
@@ -60,7 +61,7 @@ export const CleanPath: React.FC<OnePromptVideoProps> = (props) => {
           label={state.actionLabel}
           action={state.currentAction}
           frame={frame}
-          visibleFromFrame={30}
+          visibleFromFrame={Math.round(90 * merged.timingScale)}
         />
 
         <FinalSummary

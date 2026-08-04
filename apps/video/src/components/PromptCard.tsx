@@ -7,6 +7,7 @@ type Props = {
   frame: number;
   /** Frames 0–29 centered; after 30 compact in Block A */
   compactFromFrame?: number;
+  timingScale?: number;
 };
 
 /**
@@ -15,15 +16,17 @@ type Props = {
 export const PromptCard: React.FC<Props> = ({
   prompt,
   frame,
-  compactFromFrame = 30,
+  compactFromFrame = 95,
+  timingScale = 1,
 }) => {
-  const t = interpolate(frame, [compactFromFrame - 8, compactFromFrame + 20], [0, 1], {
+  const timelineFrame = frame / timingScale;
+  const t = interpolate(timelineFrame, [compactFromFrame - 10, compactFromFrame + 22], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.22, 1, 0.36, 1),
   });
 
-  const isOpening = frame < compactFromFrame;
+  const isOpening = timelineFrame < compactFromFrame;
 
   if (isOpening || t < 1) {
     const top = interpolate(t, [0, 1], [330, renderBrand.safeMarginY + 62]);
@@ -31,7 +34,7 @@ export const PromptCard: React.FC<Props> = ({
     const width = interpolate(t, [0, 1], [1320, 1480]);
     const fontSize = interpolate(t, [0, 1], [40, 27]);
     const padding = interpolate(t, [0, 1], [32, 16]);
-    const opacity = frame < 4 ? interpolate(frame, [0, 4], [0, 1], {
+    const opacity = timelineFrame < 4 ? interpolate(timelineFrame, [0, 4], [0, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     }) : 1;

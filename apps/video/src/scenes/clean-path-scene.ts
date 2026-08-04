@@ -4,8 +4,8 @@ import { CLEAN_CAMERA } from "../layout/graph-layout";
 import { CLEAN_DURATION } from "../types";
 
 /**
- * Clean path scene beats (780 frames / 26s @ 30fps).
- * Frame numbers are the single source of timing for OnePromptCleanPath.
+ * Clean path scene beats (base timeline: 780 frames / 26s @ 30fps).
+ * Final composition runtime is extended through timingScale in video props.
  */
 export const cleanPathBeats: SceneBeat[] = [
   // Opening 0–29

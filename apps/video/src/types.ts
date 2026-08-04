@@ -13,7 +13,7 @@ export const defaultVideoProps: OnePromptVideoProps = {
   showRenderLogo: true,
   backgroundVariant: "default",
   finalHoldFrames: 90,
-  timingScale: 1,
+  timingScale: 1.2,
 };
 
 export type SceneBeatAction =
@@ -52,8 +52,8 @@ export type CameraPose = {
   scale: number;
 };
 
-export const CLEAN_DURATION = 780;
-export const LATE_DURATION = 900;
+export const CLEAN_DURATION = 936;
+export const LATE_DURATION = 1080;
 export const FPS = 30;
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
