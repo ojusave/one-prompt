@@ -39,6 +39,47 @@ function stateLabel(node: WorkflowVideoNode, state: NodeVisualState): string {
   return "PENDING";
 }
 
+function detailLabel(node: WorkflowVideoNode, state: NodeVisualState): string | null {
+  switch (node.id) {
+    case "plan":
+      return "14 steps, 3 parallel branches";
+    case "inspectService":
+      return "checkout.ts -> createOrder()";
+    case "searchRetry":
+      return "retry policy: maxAttempts=2";
+    case "inspectOrder":
+      return "order write lacks event-id guard";
+    case "readTests":
+      return "missing duplicate-request assertion";
+    case "hypothesis":
+      return "same request can replay side effects";
+    case "reproduce":
+      return "2 requests -> 2 orders (before fix)";
+    case "proposeFix":
+      return "dedupe by idempotency key";
+    case "applyPatch":
+      return "guarded insert + early return";
+    case "runTests":
+      return "checkout + retry suites";
+    case "deploy":
+      return "preview: checkout-api.onrender.com";
+    case "checkpoint":
+      return "persist completed graph state";
+    case "verify1":
+      return state === "failed" ? "timeout: notification dependency" : "replay test request set";
+    case "retry":
+      return "resume from checkpoint";
+    case "verify2":
+      return "2 requests -> 1 order (after fix)";
+    case "verify":
+      return "2 requests -> 1 order (after fix)";
+    case "result":
+      return "cause fixed and verified";
+    default:
+      return null;
+  }
+}
+
 function TypeMark({ node, state }: { node: WorkflowVideoNode; state: NodeVisualState }) {
   if (node.type === "checkpoint") {
     return (
@@ -134,6 +175,7 @@ export const WorkflowNode: React.FC<Props> = ({
     state === "failed" && node.id === "verify1"
       ? "Notification dependency timed out"
       : null;
+  const detail = detailLabel(node, state);
 
   return (
     <div
@@ -197,6 +239,19 @@ export const WorkflowNode: React.FC<Props> = ({
               }}
             >
               {secondary}
+            </div>
+          ) : null}
+          {detail ? (
+            <div
+              style={{
+                marginTop: 4,
+                fontFamily: renderBrand.bodyFontFamily,
+                fontSize: 13,
+                color: renderBrand.tertiaryText,
+                lineHeight: 1.3,
+              }}
+            >
+              {detail}
             </div>
           ) : null}
         </div>

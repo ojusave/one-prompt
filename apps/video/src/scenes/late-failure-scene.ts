@@ -17,7 +17,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-receive",
     startFrame: 30,
     action: "set-current-action",
-    value: "Receiving instruction",
+    value: "Receiving incident prompt: duplicate checkout orders on retries",
   },
   { id: "done-prompt", startFrame: 42, action: "complete-node", target: "prompt" },
 
@@ -27,7 +27,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-plan",
     startFrame: 45,
     action: "set-current-action",
-    value: "Building execution plan",
+    value: "Building execution graph with retry-safe checkpoints",
   },
   { id: "done-plan", startFrame: 75, action: "complete-node", target: "plan" },
 
@@ -37,7 +37,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-inspect",
     startFrame: 78,
     action: "set-current-action",
-    value: "Inspecting checkout service",
+    value: "Tracing checkout entrypoint and order creation call chain",
   },
   { id: "done-inspect", startFrame: 110, action: "complete-node", target: "inspectService" },
 
@@ -52,7 +52,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-parallel",
     startFrame: 120,
     action: "set-current-action",
-    value: "Running 3 investigations in parallel",
+    value: "Running 3 branches in parallel: retry policy, order writes, tests",
   },
   { id: "done-search", startFrame: 160, action: "complete-node", target: "searchRetry" },
   { id: "done-order", startFrame: 168, action: "complete-node", target: "inspectOrder" },
@@ -65,7 +65,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-hyp",
     startFrame: 180,
     action: "set-current-action",
-    value: "Connecting the evidence",
+    value: "Connecting branch evidence: retries can replay a non-idempotent write",
   },
   { id: "done-hyp", startFrame: 205, action: "complete-node", target: "hypothesis" },
 
@@ -75,7 +75,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-repro",
     startFrame: 210,
     action: "set-current-action",
-    value: "Reproducing duplicate orders",
+    value: "Replaying same event ID twice to reproduce duplicate orders",
   },
   { id: "done-repro", startFrame: 245, action: "complete-node", target: "reproduce" },
 
@@ -86,7 +86,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-propose",
     startFrame: 255,
     action: "set-current-action",
-    value: "Designing a safe fix",
+    value: "Designing fix: idempotency key check before persisting order",
   },
   { id: "done-propose", startFrame: 280, action: "complete-node", target: "proposeFix" },
 
@@ -96,7 +96,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-patch",
     startFrame: 285,
     action: "set-current-action",
-    value: "Applying idempotency guard",
+    value: "Applying patch in checkout write path with guarded insert",
   },
   { id: "done-patch", startFrame: 310, action: "complete-node", target: "applyPatch" },
 
@@ -106,7 +106,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-runtests",
     startFrame: 315,
     action: "set-current-action",
-    value: "Running checkout tests",
+    value: "Running checkout + retry regression tests",
   },
   { id: "done-runtests", startFrame: 340, action: "complete-node", target: "runTests" },
 
@@ -117,7 +117,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-deploy",
     startFrame: 345,
     action: "set-current-action",
-    value: "Deploying preview on Render",
+    value: "Deploying preview on Render and waiting for healthy startup",
   },
   { id: "done-deploy", startFrame: 430, action: "complete-node", target: "deploy" },
 
@@ -128,7 +128,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-checkpoint",
     startFrame: 450,
     action: "set-current-action",
-    value: "Checkpointing completed work",
+    value: "Checkpointing completed work so retries start from verification only",
   },
   { id: "done-checkpoint", startFrame: 470, action: "complete-node", target: "checkpoint" },
 
@@ -139,7 +139,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-verify1",
     startFrame: 480,
     action: "set-current-action",
-    value: "Verifying the preview",
+    value: "Attempt 1 verification: replaying request sequence against preview",
   },
 
   // Failure 570–629
@@ -148,14 +148,14 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-fail",
     startFrame: 570,
     action: "set-current-action",
-    value: "Verification timed out",
+    value: "Verification failed: downstream notification dependency timed out",
   },
   {
     id: "msg-prior",
     startFrame: 580,
     endFrame: 629,
     action: "show-message",
-    value: "Prior work remains",
+    value: "Checkpoint holds prior work: no re-run of inspect, patch, or deploy",
   },
 
   // Retry only 630–674
@@ -166,7 +166,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-retry",
     startFrame: 630,
     action: "set-current-action",
-    value: "Retrying verification only",
+    value: "Retrying only verification path from checkpoint state",
   },
   { id: "done-retry", startFrame: 665, action: "complete-node", target: "retry" },
 
@@ -177,7 +177,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-verify2",
     startFrame: 675,
     action: "set-current-action",
-    value: "Retrying verification only",
+    value: "Attempt 2 verification: same inputs, stable one-order result",
   },
   { id: "done-verify2", startFrame: 735, action: "complete-node", target: "verify2" },
 
@@ -188,13 +188,13 @@ export const lateFailureBeats: SceneBeat[] = [
     startFrame: 750,
     endFrame: 809,
     action: "show-message",
-    value: "No earlier work repeated",
+    value: "Result: retry scope stays local, earlier completed work is untouched",
   },
   {
     id: "action-verified",
     startFrame: 750,
     action: "set-current-action",
-    value: "Verification succeeded",
+    value: "Verification succeeded after scoped retry",
   },
 
   // Complete 780–809
@@ -205,7 +205,7 @@ export const lateFailureBeats: SceneBeat[] = [
     startFrame: 780,
     action: "set-current-action",
     target: "complete",
-    value: "Workflow complete",
+    value: "Investigation complete: late failure recovered without replaying side effects",
   },
   { id: "done-result", startFrame: 800, action: "complete-node", target: "result" },
 
@@ -216,7 +216,7 @@ export const lateFailureBeats: SceneBeat[] = [
     startFrame: 810,
     action: "set-current-action",
     target: "complete",
-    value: "Workflow complete",
+    value: "One prompt, dynamic graph: only failed step retried, prior work preserved",
   },
 ];
 

@@ -68,9 +68,9 @@ export const CleanPath: React.FC<OnePromptVideoProps> = (props) => {
           frame={frame}
           appearFrame={690}
           stats={[
-            { value: "1", label: "Prompt" },
-            { value: "14", label: "Actions" },
-            { value: "3", label: "Parallel investigations" },
+            { value: "1", label: "Incident prompt" },
+            { value: "14", label: "Graph steps executed" },
+            { value: "3", label: "Parallel branches" },
           ]}
         />
 

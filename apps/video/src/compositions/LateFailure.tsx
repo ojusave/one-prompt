@@ -68,9 +68,9 @@ export const LateFailure: React.FC<OnePromptVideoProps> = (props) => {
           frame={frame}
           appearFrame={810}
           stats={[
-            { value: "1", label: "Late failure" },
-            { value: "1", label: "Step retried" },
-            { value: "0", label: "Completed steps repeated" },
+            { value: "1", label: "Late-stage failure" },
+            { value: "1", label: "Scoped step retried" },
+            { value: "0", label: "Earlier steps replayed" },
           ]}
         />
 
