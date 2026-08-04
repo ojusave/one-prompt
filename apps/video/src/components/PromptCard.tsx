@@ -29,11 +29,11 @@ export const PromptCard: React.FC<Props> = ({
   const isOpening = timelineFrame < compactFromFrame;
 
   if (isOpening || t < 1) {
-    const top = interpolate(t, [0, 1], [330, renderBrand.safeMarginY + 62]);
-    const left = interpolate(t, [0, 1], [(1920 - 1320) / 2, renderBrand.safeMarginX + 280]);
-    const width = interpolate(t, [0, 1], [1320, 1480]);
-    const fontSize = interpolate(t, [0, 1], [40, 27]);
-    const padding = interpolate(t, [0, 1], [32, 16]);
+    const top = interpolate(t, [0, 1], [312, renderBrand.safeMarginY + 66]);
+    const left = interpolate(t, [0, 1], [(1920 - 1460) / 2, renderBrand.safeMarginX + 190]);
+    const width = interpolate(t, [0, 1], [1460, 1600]);
+    const fontSize = interpolate(t, [0, 1], [50, 34]);
+    const padding = interpolate(t, [0, 1], [34, 20]);
     const opacity = timelineFrame < 4 ? interpolate(timelineFrame, [0, 4], [0, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
@@ -53,9 +53,9 @@ export const PromptCard: React.FC<Props> = ({
       >
         <div
           style={{
-            background: "rgba(0, 0, 0, 0.72)",
-            border: `1px solid ${renderBrand.borderSubtle}`,
-            borderRadius: 4,
+            background: "rgba(0, 0, 0, 0.84)",
+            border: `1px solid ${renderBrand.borderStrong}`,
+            borderRadius: 6,
             padding: `${padding}px ${padding + 8}px`,
           }}
         >
@@ -63,8 +63,8 @@ export const PromptCard: React.FC<Props> = ({
             style={{
               fontFamily: renderBrand.bodyFontFamily,
               fontSize,
-              fontWeight: 500,
-              lineHeight: 1.28,
+              fontWeight: 600,
+              lineHeight: 1.22,
               color: renderBrand.primaryText,
             }}
           >
@@ -79,29 +79,29 @@ export const PromptCard: React.FC<Props> = ({
     <div
       style={{
         position: "absolute",
-        top: renderBrand.safeMarginY + 62,
-        left: renderBrand.safeMarginX + 280,
-        width: 1480,
+        top: renderBrand.safeMarginY + 66,
+        left: renderBrand.safeMarginX + 190,
+        width: 1600,
         zIndex: 20,
       }}
     >
       <div
         style={{
-          background: "rgba(0, 0, 0, 0.72)",
-          border: `1px solid ${renderBrand.borderSubtle}`,
-          borderRadius: 4,
-          padding: "12px 18px",
+          background: "rgba(0, 0, 0, 0.84)",
+          border: `1px solid ${renderBrand.borderStrong}`,
+          borderRadius: 6,
+          padding: "16px 22px",
         }}
       >
         <div
           style={{
             fontFamily: renderBrand.bodyFontFamily,
-            fontSize: 26,
-            fontWeight: 500,
-            lineHeight: 1.25,
+            fontSize: 33,
+            fontWeight: 600,
+            lineHeight: 1.2,
             color: renderBrand.primaryText,
             display: "-webkit-box",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
           }}

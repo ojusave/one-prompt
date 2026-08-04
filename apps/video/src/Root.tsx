@@ -13,7 +13,7 @@ import {
 
 export const RemotionRoot: React.FC = () => {
   const cinematicPrompt =
-    "Incident #8472: duplicate $149 checkout orders appear when webhook retries hit the API. Find the exact write path causing the replay, implement an idempotency fix, ship a Render preview, and prove repeated requests create exactly one order.";
+    "Find why checkout retries can create duplicate orders, apply a safe fix, deploy a preview, and verify one request creates one order.";
 
   return (
     <>

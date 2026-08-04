@@ -18,7 +18,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-receive",
     startFrame: 30,
     action: "set-current-action",
-    value: "Receiving incident prompt: duplicate checkout orders on retries",
+    value: "Understand the incident prompt",
   },
   { id: "done-prompt", startFrame: 50, action: "complete-node", target: "prompt" },
 
@@ -29,7 +29,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-plan",
     startFrame: 60,
     action: "set-current-action",
-    value: "Building execution graph: inspect, branch, reproduce, patch, deploy, verify",
+    value: "Map the investigation steps",
   },
   { id: "done-plan", startFrame: 110, action: "complete-node", target: "plan" },
 
@@ -40,7 +40,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-inspect",
     startFrame: 120,
     action: "set-current-action",
-    value: "Tracing checkout entrypoint and order creation call chain",
+    value: "Inspect checkout request flow",
   },
   { id: "done-inspect", startFrame: 155, action: "complete-node", target: "inspectService" },
 
@@ -55,7 +55,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-parallel",
     startFrame: 165,
     action: "set-current-action",
-    value: "Running 3 branches in parallel: retry policy, order writes, tests",
+    value: "Run three checks in parallel",
   },
   { id: "done-search", startFrame: 230, action: "complete-node", target: "searchRetry" },
   { id: "done-order", startFrame: 240, action: "complete-node", target: "inspectOrder" },
@@ -68,7 +68,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-hyp",
     startFrame: 255,
     action: "set-current-action",
-    value: "Connecting branch evidence: retries can replay a non-idempotent write",
+    value: "Form root-cause hypothesis",
   },
   { id: "done-hyp", startFrame: 290, action: "complete-node", target: "hypothesis" },
 
@@ -79,7 +79,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-repro",
     startFrame: 300,
     action: "set-current-action",
-    value: "Replaying same event ID twice to reproduce duplicate orders",
+    value: "Reproduce duplicate-order behavior",
   },
   { id: "done-repro", startFrame: 350, action: "complete-node", target: "reproduce" },
 
@@ -90,7 +90,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-propose",
     startFrame: 360,
     action: "set-current-action",
-    value: "Designing fix: idempotency key check before persisting order",
+    value: "Design idempotency fix",
   },
   { id: "done-propose", startFrame: 395, action: "complete-node", target: "proposeFix" },
 
@@ -101,7 +101,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-patch",
     startFrame: 405,
     action: "set-current-action",
-    value: "Applying patch in checkout write path with guarded insert",
+    value: "Apply checkout patch",
   },
   { id: "done-patch", startFrame: 440, action: "complete-node", target: "applyPatch" },
 
@@ -112,7 +112,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-runtests",
     startFrame: 450,
     action: "set-current-action",
-    value: "Running checkout + retry regression tests",
+    value: "Run regression tests",
   },
   { id: "done-runtests", startFrame: 500, action: "complete-node", target: "runTests" },
 
@@ -123,7 +123,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-deploy",
     startFrame: 510,
     action: "set-current-action",
-    value: "Deploying preview on Render and waiting for healthy startup",
+    value: "Deploy Render preview",
   },
   { id: "done-deploy", startFrame: 585, action: "complete-node", target: "deploy" },
 
@@ -134,7 +134,7 @@ export const cleanPathBeats: SceneBeat[] = [
     id: "action-verify",
     startFrame: 600,
     action: "set-current-action",
-    value: "Verifying repeated requests: expect one order, not two",
+    value: "Verify one request -> one order",
   },
   { id: "done-verify", startFrame: 645, action: "complete-node", target: "verify" },
 
@@ -146,7 +146,7 @@ export const cleanPathBeats: SceneBeat[] = [
     startFrame: 660,
     action: "set-current-action",
     target: "complete",
-    value: "Investigation complete: cause fixed and verified in preview",
+    value: "Workflow complete",
   },
   { id: "done-result", startFrame: 680, action: "complete-node", target: "result" },
 
@@ -157,7 +157,7 @@ export const cleanPathBeats: SceneBeat[] = [
     startFrame: 690,
     action: "set-current-action",
     target: "complete",
-    value: "Investigation complete: one prompt produced a 14-step execution graph",
+    value: "One prompt expanded into a dynamic workflow",
   },
 ];
 

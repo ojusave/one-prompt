@@ -42,39 +42,39 @@ function stateLabel(node: WorkflowVideoNode, state: NodeVisualState): string {
 function detailLabel(node: WorkflowVideoNode, state: NodeVisualState): string | null {
   switch (node.id) {
     case "plan":
-      return "14 steps, 3 parallel branches";
+      return "Step map with clear dependencies";
     case "inspectService":
-      return "checkout.ts -> createOrder()";
+      return "Where requests enter checkout";
     case "searchRetry":
-      return "retry policy: maxAttempts=2";
+      return "Retry rules and timeout settings";
     case "inspectOrder":
-      return "order write lacks event-id guard";
+      return "Where an order is persisted";
     case "readTests":
-      return "missing duplicate-request assertion";
+      return "Existing expected behavior";
     case "hypothesis":
-      return "same request can replay side effects";
+      return "Retries can replay side effects";
     case "reproduce":
-      return "2 requests -> 2 orders (before fix)";
+      return "Confirm the duplicate-order path";
     case "proposeFix":
-      return "dedupe by idempotency key";
+      return "Add an idempotency guard";
     case "applyPatch":
-      return "guarded insert + early return";
+      return "Patch write path before persist";
     case "runTests":
-      return "checkout + retry suites";
+      return "Regression checks pass";
     case "deploy":
-      return "preview: checkout-api.onrender.com";
+      return "Preview environment is live";
     case "checkpoint":
-      return "persist completed graph state";
+      return "Reuse completed work after failure";
     case "verify1":
-      return state === "failed" ? "timeout: notification dependency" : "replay test request set";
+      return state === "failed" ? "Timeout in downstream dependency" : "Validation attempt 1";
     case "retry":
-      return "resume from checkpoint";
+      return "Resume only the failed step";
     case "verify2":
-      return "2 requests -> 1 order (after fix)";
+      return "Validation attempt 2";
     case "verify":
-      return "2 requests -> 1 order (after fix)";
+      return "Validate one request -> one order";
     case "result":
-      return "cause fixed and verified";
+      return "Cause fixed and verified";
     default:
       return null;
   }
@@ -136,6 +136,15 @@ export const WorkflowNode: React.FC<Props> = ({
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const popScale = interpolate(
+    frame,
+    [appearFrame, appearFrame + 8, appearFrame + 18],
+    [1.14, 1.04, 1],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    }
+  );
   const yOffset = interpolate(entrance, [0, 1], [16, 0]);
 
   const isCheckpoint = node.type === "checkpoint";
@@ -170,13 +179,6 @@ export const WorkflowNode: React.FC<Props> = ({
     node.id === "verify2";
 
   const opacity = dimmed && !isFocus ? 0.6 : entrance;
-  const emphasisScale =
-    state === "running" ? 1.035 : state === "entering" ? 1.015 : state === "failed" ? 1.02 : 1;
-
-  const secondary =
-    state === "failed" && node.id === "verify1"
-      ? "Notification dependency timed out"
-      : null;
   const detail = detailLabel(node, state);
 
   return (
@@ -186,9 +188,9 @@ export const WorkflowNode: React.FC<Props> = ({
         left: pos.x,
         top: pos.y + yOffset,
         width: NODE_WIDTH,
-        minHeight: NODE_HEIGHT,
+        height: NODE_HEIGHT,
         opacity,
-        transform: `scale(${emphasisScale})`,
+        transform: `scale(${popScale})`,
         transformOrigin: "left top",
         background,
         border: `1.5px solid ${borderColor}`,
@@ -209,10 +211,14 @@ export const WorkflowNode: React.FC<Props> = ({
           <div
             style={{
               fontFamily: renderBrand.bodyFontFamily,
-              fontSize: 22,
+              fontSize: 21,
               fontWeight: 500,
               lineHeight: 1.2,
               color: renderBrand.primaryText,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
             }}
           >
             {node.title}
@@ -233,18 +239,6 @@ export const WorkflowNode: React.FC<Props> = ({
           >
             {stateLabel(node, state)}
           </div>
-          {secondary ? (
-            <div
-              style={{
-                marginTop: 4,
-                fontSize: 14,
-                color: renderBrand.tertiaryText,
-                lineHeight: 1.25,
-              }}
-            >
-              {secondary}
-            </div>
-          ) : null}
           {detail ? (
             <div
               style={{
@@ -253,6 +247,10 @@ export const WorkflowNode: React.FC<Props> = ({
                 fontSize: 13,
                 color: renderBrand.tertiaryText,
                 lineHeight: 1.3,
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
               }}
             >
               {detail}

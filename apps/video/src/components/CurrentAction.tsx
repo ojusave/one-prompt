@@ -29,14 +29,15 @@ export const CurrentAction: React.FC<Props> = ({
     <div
       style={{
         position: "absolute",
-        left: renderBrand.safeMarginX,
-        bottom: renderBrand.safeMarginY,
-        width: 920,
-        height: 120,
+        right: renderBrand.safeMarginX,
+        bottom: renderBrand.safeMarginY + 150,
+        width: 760,
+        minHeight: 108,
         opacity,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        alignItems: "flex-start",
         zIndex: 30,
       }}
     >
@@ -55,10 +56,10 @@ export const CurrentAction: React.FC<Props> = ({
       <div
         style={{
           fontFamily: renderBrand.bodyFontFamily,
-          fontSize: 24,
+          fontSize: 28,
           fontWeight: 400,
           color: renderBrand.primaryText,
-          lineHeight: 1.25,
+          lineHeight: 1.22,
         }}
       >
         {action}
