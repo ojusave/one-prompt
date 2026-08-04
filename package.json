@@ -13,7 +13,12 @@
     "test:e2e": "pnpm --filter @one-prompt/web test:e2e",
     "db:generate": "pnpm --filter @one-prompt/web db:generate",
     "db:migrate": "pnpm --filter @one-prompt/web db:migrate",
-    "export-traces": "node --import tsx scripts/export-traces.mjs"
+    "export-traces": "node --import tsx scripts/export-traces.mjs",
+    "video:studio": "pnpm --filter @one-prompt/video studio",
+    "video:render:clean": "pnpm --filter @one-prompt/video render:clean",
+    "video:render:late": "pnpm --filter @one-prompt/video render:late",
+    "video:render": "pnpm --filter @one-prompt/video render",
+    "video:stills": "pnpm --filter @one-prompt/video stills"
   },
   "engines": {
     "node": "22.x"

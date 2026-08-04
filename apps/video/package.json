@@ -1,0 +1,28 @@
+{
+  "name": "@one-prompt/video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.ts --no-open",
+    "render:clean": "remotion render src/index.ts OnePromptCleanPath ../../out/one-prompt-clean-path.mp4 --codec=h264 --muted",
+    "render:late": "remotion render src/index.ts OnePromptLateFailure ../../out/one-prompt-late-failure.mp4 --codec=h264 --muted",
+    "render": "pnpm render:clean && pnpm render:late",
+    "stills": "node scripts/render-stills.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@one-prompt/shared": "workspace:*",
+    "@remotion/cli": "4.0.506",
+    "@remotion/media-utils": "4.0.506",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "4.0.506"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

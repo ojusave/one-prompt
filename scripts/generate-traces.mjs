@@ -25,4 +25,4 @@ const note = {
 };
 
 writeFileSync(join(tracesDir, "README.json"), JSON.stringify(note, null, 2));
-console.log("Created traces/ directory. Trace data lives in apps/web/src/lib/traces/fixtures.ts");
+console.log("Created traces/ directory. Trace data lives in packages/shared/src/traces/fixtures.ts");
