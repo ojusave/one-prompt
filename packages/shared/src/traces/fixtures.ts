@@ -7,6 +7,7 @@ import type {
 import { DEFAULT_PROMPT, DEMO_TRACE_IDS } from "../types";
 
 type EventDef = Omit<ExecutionEvent, "runId" | "sequence"> & { seq: number };
+const EXECUTION_BUDGET_MS = 30_000;
 
 function buildRun(id: string, label: string, result: ExecutionRun["result"]): ExecutionRun {
   return {
@@ -28,6 +29,43 @@ function toEvents(runId: string, defs: EventDef[]): ExecutionEvent[] {
     const { seq, ...rest } = d;
     return { ...rest, runId, sequence: seq };
   });
+}
+
+function maxTimelineEndMs(events: ExecutionEvent[]): number {
+  return events.reduce((max, event) => {
+    const end = event.relativeStartMs + (event.durationMs ?? 0);
+    return end > max ? end : max;
+  }, 0);
+}
+
+function fitEventsToBudget(
+  events: ExecutionEvent[],
+  budgetMs = EXECUTION_BUDGET_MS
+): { events: ExecutionEvent[]; endMs: number } {
+  const originalEnd = maxTimelineEndMs(events);
+  if (originalEnd <= budgetMs) {
+    return { events, endMs: originalEnd };
+  }
+
+  const scale = budgetMs / originalEnd;
+  const scaled = events.map((event) => ({
+    ...event,
+    relativeStartMs: Math.round(event.relativeStartMs * scale),
+    durationMs:
+      event.durationMs === undefined ? undefined : Math.max(1, Math.round(event.durationMs * scale)),
+  }));
+  return { events: scaled, endMs: maxTimelineEndMs(scaled) };
+}
+
+function runWithDuration(run: ExecutionRun, durationMs: number): ExecutionRun {
+  const startedAtMs = Date.parse(run.startedAt);
+  const completedAtIso = Number.isFinite(startedAtMs)
+    ? new Date(startedAtMs + durationMs).toISOString()
+    : run.completedAt;
+  return {
+    ...run,
+    completedAt: completedAtIso,
+  };
 }
 
 const SHARED_START: EventDef[] = [
@@ -84,7 +122,7 @@ const SHARED_START: EventDef[] = [
 
 function buildCleanTrace(): TraceFixture {
   const runId = DEMO_TRACE_IDS.clean;
-  const events = toEvents(runId, [
+  const rawEvents = toEvents(runId, [
     ...SHARED_START,
     {
       id: "evt-search-retry",
@@ -291,22 +329,26 @@ function buildCleanTrace(): TraceFixture {
     },
   ]);
 
+  const { events, endMs } = fitEventsToBudget(rawEvents);
   return {
-    run: buildRun(runId, "Clean path", {
+    run: runWithDuration(
+      buildRun(runId, "Clean path", {
       status: "success",
       title: "Duplicate-order cause identified and verified",
       summary: "Request-level retries repeated order creation without an idempotency guard.",
       cause: "Request-level retries repeated an order-creation side effect without an idempotency guard.",
       fix: "Separate retryable notification work and deduplicate order creation by event ID.",
       verification: "Repeated requests produced one order.",
-    }),
+      }),
+      endMs
+    ),
     events,
   };
 }
 
 function buildDetourTrace(): TraceFixture {
   const runId = DEMO_TRACE_IDS.detour;
-  const events = toEvents(runId, [
+  const rawEvents = toEvents(runId, [
     ...SHARED_START,
     {
       id: "evt-inspect-payment",
@@ -535,22 +577,26 @@ function buildDetourTrace(): TraceFixture {
     },
   ]);
 
+  const { events, endMs } = fitEventsToBudget(rawEvents);
   return {
-    run: buildRun(runId, "Unexpected detour", {
+    run: runWithDuration(
+      buildRun(runId, "Unexpected detour", {
       status: "success",
       title: "Duplicate-order cause identified and verified",
       summary: "Correct result after an unnecessary payment investigation branch.",
       cause: "Request-level retries repeated order creation without an idempotency guard.",
       fix: "Deduplicate order creation by event ID.",
       verification: "Repeated requests produced one order.",
-    }),
+      }),
+      endMs
+    ),
     events,
   };
 }
 
 function buildLateFailureTrace(): TraceFixture {
   const runId = DEMO_TRACE_IDS["late-failure"];
-  const events = toEvents(runId, [
+  const rawEvents = toEvents(runId, [
     ...SHARED_START,
     {
       id: "evt-search-retry",
@@ -806,15 +852,19 @@ function buildLateFailureTrace(): TraceFixture {
     },
   ]);
 
+  const { events, endMs } = fitEventsToBudget(rawEvents);
   return {
-    run: buildRun(runId, "Late failure", {
+    run: runWithDuration(
+      buildRun(runId, "Late failure", {
       status: "success",
       title: "Duplicate-order cause identified and verified",
       summary: "Verification failed once. Retry succeeded without repeating prior side effects.",
       cause: "Request-level retries repeated order creation without an idempotency guard.",
       fix: "Separate retryable notification work and deduplicate order creation by event ID.",
       verification: "Repeated requests produced one order after retry.",
-    }),
+      }),
+      endMs
+    ),
     events,
   };
 }

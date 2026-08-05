@@ -114,7 +114,7 @@ export function RunWorkspace({ fixture, autoplay }: RunWorkspaceProps) {
           <button
             type="button"
             onClick={() => setShowListView((v) => !v)}
-            className="absolute left-3 top-3 rounded border border-border-default bg-surface px-2 py-1 text-xs text-text-secondary hover:bg-surface-hover"
+            className="absolute left-3 top-14 z-20 rounded border border-border-default bg-surface px-2 py-1 text-xs text-text-secondary hover:bg-surface-hover"
           >
             {showListView ? "Graph view" : "List view"}
           </button>

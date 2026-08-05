@@ -40,6 +40,11 @@ export function RunCompletionSummary({ result, runId }: RunCompletionSummaryProp
             Replay execution
           </Button>
         </Link>
+        <Link href={`/api/runs/${runId}/recording`}>
+          <Button size="sm" variant="secondary">
+            Download MP4 recording
+          </Button>
+        </Link>
         <Link href="/compare?runs=demo-clean,demo-detour,demo-late-failure">
           <Button size="sm" variant="ghost">
             Compare runs

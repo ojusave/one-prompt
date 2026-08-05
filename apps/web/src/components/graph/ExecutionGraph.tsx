@@ -129,8 +129,8 @@ function GraphInner({
           </marker>
         </defs>
       </svg>
-      <div className="pointer-events-none absolute left-3 top-3 z-20 inline-flex items-center rounded-md border border-border-default bg-surface-raised/95 px-3 py-2 shadow-sm">
-        <img src="/render-logo-white.svg" alt="Render logo" className="h-4 w-auto" />
+      <div className="pointer-events-none absolute left-3 top-3 z-30 inline-flex items-center rounded-md border border-border-strong bg-surface-raised/95 px-3 py-2 shadow-sm">
+        <img src="/render-logo-white.svg" alt="Render logo" className="h-5 w-auto" />
       </div>
       <ReactFlow
         nodes={nodesWithSelection}
@@ -152,7 +152,7 @@ function GraphInner({
       <button
         type="button"
         onClick={onFit}
-        className="absolute bottom-3 right-3 rounded border border-border-default bg-surface px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-hover"
+        className="absolute bottom-3 right-3 z-20 rounded border border-border-default bg-surface px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-hover"
       >
         Fit execution
       </button>
