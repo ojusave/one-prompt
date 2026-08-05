@@ -114,6 +114,10 @@ function GraphInner({
           </marker>
         </defs>
       </svg>
+      <div className="pointer-events-none absolute left-3 top-3 z-20 inline-flex items-center gap-2 rounded border border-border-default bg-surface/90 px-2.5 py-1.5">
+        <img src="/render-favicon.svg" alt="Render logo" className="h-3.5 w-3.5" />
+        <span className="text-xs text-text-secondary">Render</span>
+      </div>
       <ReactFlow
         nodes={nodesWithSelection}
         edges={edges}
