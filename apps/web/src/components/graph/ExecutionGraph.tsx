@@ -43,7 +43,12 @@ function ExecutionEdge({
     <BaseEdge
       id={id}
       path={path}
-      style={{ strokeWidth: 1.5, ...style }}
+      style={{
+        stroke: style?.stroke ?? "rgba(255,255,255,0.24)",
+        strokeOpacity: style?.strokeOpacity ?? 0.95,
+        strokeWidth: 1.75,
+        ...style,
+      }}
       interactionWidth={20}
       markerEnd="url(#arrow)"
     />
@@ -98,7 +103,17 @@ function GraphInner({
   }, [nodes.length, fitView]);
 
   return (
-    <div className="relative h-full w-full bg-background-subtle">
+    <div
+      className="relative h-full w-full"
+      style={{
+        backgroundColor: "#050506",
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: "24px 24px",
+      }}
+    >
       <svg className="absolute h-0 w-0">
         <defs>
           <marker
@@ -110,13 +125,12 @@ function GraphInner({
             markerHeight="6"
             orient="auto-start-reverse"
           >
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--border-default)" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.24)" />
           </marker>
         </defs>
       </svg>
-      <div className="pointer-events-none absolute left-3 top-3 z-20 inline-flex items-center gap-2 rounded border border-border-default bg-surface/90 px-2.5 py-1.5">
-        <img src="/render-favicon.svg" alt="Render logo" className="h-3.5 w-3.5" />
-        <span className="text-xs text-text-secondary">Render</span>
+      <div className="pointer-events-none absolute left-3 top-3 z-20 inline-flex items-center rounded-md border border-border-default bg-surface-raised/95 px-3 py-2 shadow-sm">
+        <img src="/render-logo-white.svg" alt="Render logo" className="h-4 w-auto" />
       </div>
       <ReactFlow
         nodes={nodesWithSelection}
@@ -133,7 +147,7 @@ function GraphInner({
         maxZoom={1.5}
         fitView
       >
-        <Background color="var(--border-subtle)" gap={24} size={1} />
+        <Background color="rgba(255,255,255,0.05)" gap={24} size={1} />
       </ReactFlow>
       <button
         type="button"
