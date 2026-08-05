@@ -46,16 +46,16 @@ export const cleanPathBeats: SceneBeat[] = [
 
   // Parallel 165–254
   { id: "show-search", startFrame: 165, action: "show-node", target: "searchRetry" },
-  { id: "run-search", startFrame: 167, action: "activate-node", target: "searchRetry" },
-  { id: "show-order", startFrame: 171, action: "show-node", target: "inspectOrder" },
-  { id: "run-order", startFrame: 173, action: "activate-node", target: "inspectOrder" },
-  { id: "show-tests", startFrame: 177, action: "show-node", target: "readTests" },
-  { id: "run-tests-branch", startFrame: 179, action: "activate-node", target: "readTests" },
+  { id: "run-search", startFrame: 166, action: "activate-node", target: "searchRetry" },
+  { id: "show-order", startFrame: 168, action: "show-node", target: "inspectOrder" },
+  { id: "run-order", startFrame: 169, action: "activate-node", target: "inspectOrder" },
+  { id: "show-tests", startFrame: 171, action: "show-node", target: "readTests" },
+  { id: "run-tests-branch", startFrame: 172, action: "activate-node", target: "readTests" },
   {
     id: "action-parallel",
     startFrame: 165,
     action: "set-current-action",
-    value: "Run three checks in parallel",
+    value: "Parallel investigation split",
   },
   { id: "done-search", startFrame: 230, action: "complete-node", target: "searchRetry" },
   { id: "done-order", startFrame: 240, action: "complete-node", target: "inspectOrder" },
@@ -164,18 +164,7 @@ export const cleanPathBeats: SceneBeat[] = [
 export const cleanCameraKeyframes: CameraKeyframe[] = [
   { frame: 0, pose: CLEAN_CAMERA.opening },
   { frame: 30, pose: CLEAN_CAMERA.start },
-  { frame: 160, pose: CLEAN_CAMERA.start },
-  { frame: 175, pose: CLEAN_CAMERA.parallel },
-  { frame: 250, pose: CLEAN_CAMERA.parallel },
-  { frame: 270, pose: CLEAN_CAMERA.analysis },
-  { frame: 350, pose: CLEAN_CAMERA.analysis },
-  { frame: 380, pose: CLEAN_CAMERA.fix },
-  { frame: 500, pose: CLEAN_CAMERA.fix },
-  { frame: 520, pose: CLEAN_CAMERA.deploy },
-  { frame: 590, pose: CLEAN_CAMERA.deploy },
-  { frame: 610, pose: CLEAN_CAMERA.verify },
-  { frame: 655, pose: CLEAN_CAMERA.verify },
-  { frame: 690, pose: CLEAN_CAMERA.overview },
+  { frame: 80, pose: CLEAN_CAMERA.overview },
   { frame: CLEAN_DURATION - 1, pose: CLEAN_CAMERA.overview },
 ];
 

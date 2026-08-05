@@ -58,5 +58,5 @@ export const FPS = 30;
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
 
-export const NODE_WIDTH = 250;
-export const NODE_HEIGHT = 88;
+export const NODE_WIDTH = 220;
+export const NODE_HEIGHT = 90;

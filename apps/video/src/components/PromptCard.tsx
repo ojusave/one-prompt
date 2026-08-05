@@ -19,6 +19,7 @@ export const PromptCard: React.FC<Props> = ({
   compactFromFrame = 95,
   timingScale = 1,
 }) => {
+  const compactPrompt = "Fix duplicate checkout orders caused by webhook retries.";
   const timelineFrame = frame / timingScale;
   const t = interpolate(timelineFrame, [compactFromFrame - 10, compactFromFrame + 22], [0, 1], {
     extrapolateLeft: "clamp",
@@ -61,6 +62,25 @@ export const PromptCard: React.FC<Props> = ({
         >
           <div
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 18,
+              padding: "6px 10px",
+              borderRadius: 999,
+              border: `1px solid ${renderBrand.accentGlow}`,
+              background: renderBrand.accentSoft,
+              fontFamily: renderBrand.monoFontFamily,
+              fontSize: 14,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: renderBrand.accent,
+            }}
+          >
+            One prompt
+          </div>
+          <div
+            style={{
               fontFamily: renderBrand.bodyFontFamily,
               fontSize,
               fontWeight: 600,
@@ -95,6 +115,25 @@ export const PromptCard: React.FC<Props> = ({
       >
         <div
           style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 12,
+            padding: "4px 9px",
+            borderRadius: 999,
+            border: `1px solid ${renderBrand.accentGlow}`,
+            background: renderBrand.accentSoft,
+            fontFamily: renderBrand.monoFontFamily,
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: renderBrand.accent,
+          }}
+        >
+          One prompt
+        </div>
+        <div
+          style={{
             fontFamily: renderBrand.bodyFontFamily,
             fontSize: 33,
             fontWeight: 600,
@@ -106,7 +145,7 @@ export const PromptCard: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-          {prompt}
+          {compactPrompt}
         </div>
       </div>
     </div>

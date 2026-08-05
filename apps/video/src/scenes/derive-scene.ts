@@ -31,8 +31,12 @@ function buildEdges(
   nodeAppearFrame: Record<string, number>
 ): EdgeVisual[] {
   const edges: EdgeVisual[] = [];
+  const shownNodes = new Set(Object.keys(nodeAppearFrame));
   for (const node of nodes) {
     for (const dep of node.dependencies) {
+      if (!shownNodes.has(dep) || !shownNodes.has(node.id)) {
+        continue;
+      }
       const appear = nodeAppearFrame[node.id] ?? Number.POSITIVE_INFINITY;
       edges.push({
         id: `${dep}->${node.id}`,

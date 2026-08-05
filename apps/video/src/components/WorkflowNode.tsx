@@ -17,67 +17,22 @@ type Props = {
 
 function stateLabel(node: WorkflowVideoNode, state: NodeVisualState): string {
   if (state === "failed") {
-    return node.id.startsWith("verify") ? "VERIFICATION FAILED" : "FAILED";
+    return "FAILED";
   }
   if (state === "running") {
     if (node.type === "deployment") return "DEPLOYING";
-    if (node.id.startsWith("verify") || node.type === "test" && node.title === "Verify behavior") {
+    if (node.id.startsWith("verify") || (node.type === "test" && node.title === "Verify behavior")) {
       const attempt = node.attempt ?? 1;
-      return `ATTEMPT ${attempt} · VERIFYING`;
+      return `ATTEMPT ${attempt} · RUNNING`;
     }
     return "RUNNING";
   }
   if (state === "succeeded") {
     if (node.type === "deployment") return "LIVE";
-    if (node.id === "runTests") return "TESTS PASSED";
-    if (node.id === "verify" || node.id === "verify2") {
-      return node.id === "verify" ? "1 ORDER CREATED" : "VERIFIED";
-    }
-    if (node.id === "verify1") return "VERIFICATION FAILED";
-    return "COMPLETE";
+    if (node.id === "verify" || node.id === "verify2") return "VERIFIED";
+    return "";
   }
   return "PENDING";
-}
-
-function detailLabel(node: WorkflowVideoNode, state: NodeVisualState): string | null {
-  switch (node.id) {
-    case "plan":
-      return "Step map with clear dependencies";
-    case "inspectService":
-      return "Where requests enter checkout";
-    case "searchRetry":
-      return "Retry rules and timeout settings";
-    case "inspectOrder":
-      return "Where an order is persisted";
-    case "readTests":
-      return "Existing expected behavior";
-    case "hypothesis":
-      return "Retries can replay side effects";
-    case "reproduce":
-      return "Confirm the duplicate-order path";
-    case "proposeFix":
-      return "Add an idempotency guard";
-    case "applyPatch":
-      return "Patch write path before persist";
-    case "runTests":
-      return "Regression checks pass";
-    case "deploy":
-      return "Preview environment is live";
-    case "checkpoint":
-      return "Reuse completed work after failure";
-    case "verify1":
-      return state === "failed" ? "Timeout in downstream dependency" : "Validation attempt 1";
-    case "retry":
-      return "Resume only the failed step";
-    case "verify2":
-      return "Validation attempt 2";
-    case "verify":
-      return "Validate one request -> one order";
-    case "result":
-      return "Cause fixed and verified";
-    default:
-      return null;
-  }
 }
 
 function TypeMark({ node, state }: { node: WorkflowVideoNode; state: NodeVisualState }) {
@@ -139,7 +94,7 @@ export const WorkflowNode: React.FC<Props> = ({
   const popScale = interpolate(
     frame,
     [appearFrame, appearFrame + 8, appearFrame + 18],
-    [1.14, 1.04, 1],
+    [1.08, 1.03, 1],
     {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
@@ -177,9 +132,16 @@ export const WorkflowNode: React.FC<Props> = ({
     node.id === "retry" ||
     node.id === "verify1" ||
     node.id === "verify2";
+  const isCompact = state === "succeeded" && !isFocus;
+  const width = isCompact ? 176 : NODE_WIDTH;
+  const height = isCompact ? 56 : NODE_HEIGHT;
+  const pad = isCompact ? "10px 12px" : "14px 16px";
 
-  const opacity = dimmed && !isFocus ? 0.6 : entrance;
-  const detail = detailLabel(node, state);
+  const opacity = dimmed && !isFocus ? 0.82 : entrance;
+  const detail = state === "failed" && node.id === "verify1"
+    ? "Timed out dependency"
+    : null;
+  const metaLabel = stateLabel(node, state);
 
   return (
     <div
@@ -187,8 +149,8 @@ export const WorkflowNode: React.FC<Props> = ({
         position: "absolute",
         left: pos.x,
         top: pos.y + yOffset,
-        width: NODE_WIDTH,
-        height: NODE_HEIGHT,
+        width,
+        height,
         opacity,
         transform: `scale(${popScale})`,
         transformOrigin: "left top",
@@ -196,55 +158,56 @@ export const WorkflowNode: React.FC<Props> = ({
         border: `1.5px solid ${borderColor}`,
         borderRadius: 4,
         boxShadow: glow,
-        padding: "12px 14px",
+        padding: pad,
         display: "flex",
         flexDirection: "column",
-        gap: 6,
+        gap: isCompact ? 2 : 8,
         boxSizing: "border-box",
       }}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-        <div style={{ paddingTop: 4 }}>
+        <div style={{ paddingTop: isCompact ? 2 : 4 }}>
           <TypeMark node={node} state={state} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
               fontFamily: renderBrand.bodyFontFamily,
-              fontSize: 21,
+              fontSize: isCompact ? 14 : 18,
               fontWeight: 500,
               lineHeight: 1.2,
               color: renderBrand.primaryText,
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
               overflow: "hidden",
             }}
           >
             {node.title}
           </div>
-          <div
-            style={{
-              marginTop: 6,
-              fontFamily: renderBrand.monoFontFamily,
-              fontSize: 15,
-              letterSpacing: "0.04em",
-              color:
-                state === "failed"
-                  ? renderBrand.danger
-                  : state === "running"
-                    ? renderBrand.primaryText
-                    : renderBrand.secondaryText,
-            }}
-          >
-            {stateLabel(node, state)}
-          </div>
+          {metaLabel && !isCompact ? (
+            <div
+              style={{
+                marginTop: 6,
+                fontFamily: renderBrand.monoFontFamily,
+                fontSize: 11,
+                letterSpacing: "0.04em",
+                color:
+                  state === "failed"
+                    ? renderBrand.danger
+                    : state === "running"
+                      ? renderBrand.primaryText
+                      : renderBrand.secondaryText,
+              }}
+            >
+              {metaLabel}
+            </div>
+          ) : null}
           {detail ? (
             <div
               style={{
                 marginTop: 4,
                 fontFamily: renderBrand.bodyFontFamily,
-                fontSize: 13,
+                fontSize: 11,
                 color: renderBrand.tertiaryText,
                 lineHeight: 1.3,
                 display: "-webkit-box",

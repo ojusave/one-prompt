@@ -53,6 +53,7 @@ export const CleanPath: React.FC<OnePromptVideoProps> = (props) => {
             nodes={cleanWorkflowGraph.nodes}
             state={state}
             frame={frame}
+            timingScale={merged.timingScale}
             variant="clean"
           />
         ) : null}

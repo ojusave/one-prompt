@@ -41,15 +41,15 @@ describe("clean scene timing", () => {
     expect(stateEnd.showSummary).toBe(true);
   });
 
-  it("runs three investigations simultaneously around frame 210", () => {
+  it("keeps the parallel investigation branch active around frame 210", () => {
     const state = deriveSceneState(
       210,
       cleanPathBeats,
       cleanWorkflowGraph.nodes,
       cleanCameraKeyframes
     );
-    expect(state.nodeStates.searchRetry).toBe("running");
     expect(state.nodeStates.inspectOrder).toBe("running");
+    expect(state.nodeStates.searchRetry).toBe("running");
     expect(state.nodeStates.readTests).toBe("running");
   });
 });

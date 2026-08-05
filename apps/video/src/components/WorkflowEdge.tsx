@@ -1,7 +1,8 @@
 import React from "react";
 import { renderBrand } from "../brand/render-brand";
-import { nodeAnchor } from "../layout/graph-layout";
+import { nodeAnchor, positionFor } from "../layout/graph-layout";
 import type { EdgeVisual } from "../scenes/derive-scene";
+import { NODE_HEIGHT, NODE_WIDTH } from "../types";
 
 type Props = {
   edge: EdgeVisual;
@@ -15,28 +16,50 @@ type Props = {
 export const WorkflowEdge: React.FC<Props> = ({ edge, variant, dimmed }) => {
   if (edge.visibleProgress <= 0) return null;
 
-  const from = nodeAnchor(edge.from, "right", variant);
-  const to = nodeAnchor(edge.to, "left", variant);
+  let from = nodeAnchor(edge.from, "right", variant);
+  let to = nodeAnchor(edge.to, "left", variant);
 
-  const midX = (from.x + to.x) / 2;
-  const d = `M ${from.x} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${to.x} ${to.y}`;
-
-  // Approximate path length for stroke dash animation
   const dx = to.x - from.x;
   const dy = to.y - from.y;
-  const len = Math.sqrt(dx * dx + dy * dy) * 1.15;
+  const isDropEdge = edge.from === "verify1" && edge.to === "retry";
+  const isRetryForwardEdge = edge.from === "retry" && edge.to === "verify2";
+
+  if (isDropEdge) {
+    const fromPos = positionFor(edge.from, variant);
+    const toPos = positionFor(edge.to, variant);
+    from = {
+      x: fromPos.x + NODE_WIDTH / 2,
+      y: fromPos.y + NODE_HEIGHT,
+    };
+    to = {
+      x: toPos.x + NODE_WIDTH / 2,
+      y: toPos.y,
+    };
+  }
+
+  let d = "";
+  if (isDropEdge) {
+    d = `M ${from.x} ${from.y} L ${from.x} ${to.y}`;
+  } else {
+    const elbowX = from.x + Math.max(30, Math.min(62, Math.abs(dx) * 0.32));
+    d = `M ${from.x} ${from.y} L ${elbowX} ${from.y} L ${elbowX} ${to.y} L ${to.x} ${to.y}`;
+  }
+
+  // Approximate path length for stroke dash animation
+  const len = Math.sqrt(dx * dx + dy * dy) * 1.55;
   const drawn = len * edge.visibleProgress;
 
   const isDashed = edge.dashed;
-  const color = isDashed ? renderBrand.warning : renderBrand.borderStrong;
-  const opacity = dimmed && !isDashed ? 0.3 : 0.8;
+  const color = isDashed ? renderBrand.warning : "rgba(255,255,255,0.44)";
+  const isRetryPath = isDropEdge || isRetryForwardEdge;
+  const opacity = dimmed && !isDashed ? 0.72 : 0.96;
 
   return (
     <path
       d={d}
       fill="none"
       stroke={color}
-      strokeWidth={isDashed ? 2.5 : 2}
+      strokeWidth={isRetryPath ? 3.6 : isDashed ? 3 : 2.8}
       strokeDasharray={isDashed ? "8 7" : `${drawn} ${len}`}
       strokeLinecap="round"
       opacity={opacity}

@@ -2,29 +2,29 @@ import type { CameraPose } from "../types";
 import { NODE_HEIGHT, NODE_WIDTH } from "../types";
 
 export const graphPositions: Record<string, { x: number; y: number }> = {
-  prompt: { x: 80, y: 400 },
-  plan: { x: 370, y: 400 },
-  inspectService: { x: 660, y: 400 },
+  prompt: { x: 40, y: 320 },
+  plan: { x: 270, y: 320 },
+  inspectService: { x: 500, y: 320 },
 
-  searchRetry: { x: 960, y: 170 },
-  inspectOrder: { x: 960, y: 400 },
-  readTests: { x: 960, y: 630 },
+  searchRetry: { x: 730, y: 220 },
+  inspectOrder: { x: 730, y: 340 },
+  readTests: { x: 730, y: 460 },
 
-  hypothesis: { x: 1260, y: 400 },
-  reproduce: { x: 1550, y: 400 },
-  proposeFix: { x: 1840, y: 400 },
-  applyPatch: { x: 2130, y: 400 },
-  runTests: { x: 2420, y: 400 },
-  deploy: { x: 2710, y: 400 },
+  hypothesis: { x: 1000, y: 340 },
+  reproduce: { x: 1180, y: 640 },
+  proposeFix: { x: 1360, y: 640 },
+  applyPatch: { x: 1540, y: 640 },
+  runTests: { x: 1720, y: 640 },
+  deploy: { x: 1900, y: 640 },
 
-  verify: { x: 3000, y: 400 },
-  result: { x: 3290, y: 400 },
+  verify: { x: 2080, y: 640 },
+  result: { x: 2260, y: 640 },
 
-  checkpoint: { x: 3000, y: 400 },
-  verify1: { x: 3290, y: 280 },
-  retry: { x: 3580, y: 480 },
-  verify2: { x: 3870, y: 480 },
-  resultLate: { x: 4160, y: 480 },
+  checkpoint: { x: 2080, y: 640 },
+  verify1: { x: 2260, y: 460 },
+  retry: { x: 2260, y: 810 },
+  verify2: { x: 2440, y: 810 },
+  resultLate: { x: 2620, y: 810 },
 };
 
 /** Center a focus x-coordinate in the 1920 graph viewport. */
@@ -67,26 +67,24 @@ export function nodeAnchor(
 
 export const CLEAN_CAMERA: Record<string, CameraPose> = {
   opening: { translateX: 0, translateY: 0, scale: 1 },
-  start: cam(400, 1.0, -30),
-  parallel: cam(960, 0.92, -10),
-  analysis: cam(1400, 0.88, -10),
-  fix: cam(2000, 0.85, -10),
-  deploy: cam(2710, 0.88, -10),
-  verify: cam(3100, 0.88, -10),
-  // Full clean graph ~80..3540
-  overview: { translateX: 80, translateY: 60, scale: 0.48 },
+  start: cam(240, 1.02, -80),
+  parallel: cam(640, 1.0, -64),
+  analysis: cam(900, 0.95, -58),
+  fix: cam(1500, 0.92, -58),
+  deploy: cam(1900, 0.9, -58),
+  verify: cam(2100, 0.9, -58),
+  overview: { translateX: 8, translateY: 4, scale: 0.76 },
 };
 
 export const LATE_CAMERA: Record<string, CameraPose> = {
   opening: { translateX: 0, translateY: 0, scale: 1 },
-  start: cam(400, 1.0, -30),
-  parallel: cam(960, 0.92, -10),
-  analysis: cam(1400, 0.88, -10),
-  fix: cam(2000, 0.85, -10),
-  deploy: cam(2710, 0.88, -10),
-  checkpoint: cam(3000, 0.86, -10),
-  failure: cam(3290, 0.88, 20),
-  retry: cam(3720, 0.82, 40),
-  // Late graph extends to ~4410
-  overview: { translateX: 40, translateY: 50, scale: 0.4 },
+  start: cam(240, 1.02, -80),
+  parallel: cam(640, 1.0, -64),
+  analysis: cam(900, 0.95, -58),
+  fix: cam(1500, 0.92, -58),
+  deploy: cam(1900, 0.9, -58),
+  checkpoint: cam(2100, 0.9, -58),
+  failure: cam(2300, 0.88, -40),
+  retry: cam(2500, 0.86, -30),
+  overview: { translateX: -12, translateY: -6, scale: 0.67 },
 };

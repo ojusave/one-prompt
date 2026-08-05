@@ -29,15 +29,16 @@ export const CurrentAction: React.FC<Props> = ({
     <div
       style={{
         position: "absolute",
-        right: renderBrand.safeMarginX,
-        bottom: renderBrand.safeMarginY + 150,
-        width: 760,
+        left: "50%",
+        transform: "translateX(-50%)",
+        bottom: 8,
+        width: 920,
         minHeight: 108,
         opacity,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "flex-start",
+        alignItems: "center",
         zIndex: 30,
       }}
     >
@@ -49,6 +50,7 @@ export const CurrentAction: React.FC<Props> = ({
           textTransform: "uppercase",
           color: renderBrand.tertiaryText,
           marginBottom: 8,
+          textAlign: "center",
         }}
       >
         {label}
@@ -56,10 +58,11 @@ export const CurrentAction: React.FC<Props> = ({
       <div
         style={{
           fontFamily: renderBrand.bodyFontFamily,
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 400,
           color: renderBrand.primaryText,
           lineHeight: 1.22,
+          textAlign: "center",
         }}
       >
         {action}

@@ -44,16 +44,16 @@ export const lateFailureBeats: SceneBeat[] = [
 
   // Parallel 120–179
   { id: "show-search", startFrame: 120, action: "show-node", target: "searchRetry" },
-  { id: "run-search", startFrame: 122, action: "activate-node", target: "searchRetry" },
-  { id: "show-order", startFrame: 126, action: "show-node", target: "inspectOrder" },
-  { id: "run-order", startFrame: 128, action: "activate-node", target: "inspectOrder" },
-  { id: "show-tests", startFrame: 132, action: "show-node", target: "readTests" },
-  { id: "run-tests-branch", startFrame: 134, action: "activate-node", target: "readTests" },
+  { id: "run-search", startFrame: 121, action: "activate-node", target: "searchRetry" },
+  { id: "show-order", startFrame: 123, action: "show-node", target: "inspectOrder" },
+  { id: "run-order", startFrame: 124, action: "activate-node", target: "inspectOrder" },
+  { id: "show-tests", startFrame: 126, action: "show-node", target: "readTests" },
+  { id: "run-tests-branch", startFrame: 127, action: "activate-node", target: "readTests" },
   {
     id: "action-parallel",
     startFrame: 120,
     action: "set-current-action",
-    value: "Run three checks in parallel",
+    value: "Parallel investigation split",
   },
   { id: "done-search", startFrame: 160, action: "complete-node", target: "searchRetry" },
   { id: "done-order", startFrame: 168, action: "complete-node", target: "inspectOrder" },
@@ -156,7 +156,7 @@ export const lateFailureBeats: SceneBeat[] = [
     startFrame: 580,
     endFrame: 629,
     action: "show-message",
-    value: "Earlier completed work is preserved",
+    value: "Everything before verification stays complete",
   },
 
   // Retry only 630–674
@@ -167,7 +167,7 @@ export const lateFailureBeats: SceneBeat[] = [
     id: "action-retry",
     startFrame: 630,
     action: "set-current-action",
-    value: "Retry only the failed step",
+    value: "Retry only failed verification",
   },
   { id: "done-retry", startFrame: 665, action: "complete-node", target: "retry" },
 
@@ -189,7 +189,7 @@ export const lateFailureBeats: SceneBeat[] = [
     startFrame: 750,
     endFrame: 809,
     action: "show-message",
-    value: "No earlier steps were repeated",
+    value: "No investigation, patch, test, or deploy replay",
   },
   {
     id: "action-verified",
@@ -224,21 +224,7 @@ export const lateFailureBeats: SceneBeat[] = [
 export const lateCameraKeyframes: CameraKeyframe[] = [
   { frame: 0, pose: LATE_CAMERA.opening },
   { frame: 30, pose: LATE_CAMERA.start },
-  { frame: 110, pose: LATE_CAMERA.start },
-  { frame: 125, pose: LATE_CAMERA.parallel },
-  { frame: 175, pose: LATE_CAMERA.parallel },
-  { frame: 195, pose: LATE_CAMERA.analysis },
-  { frame: 245, pose: LATE_CAMERA.analysis },
-  { frame: 270, pose: LATE_CAMERA.fix },
-  { frame: 340, pose: LATE_CAMERA.fix },
-  { frame: 360, pose: LATE_CAMERA.deploy },
-  { frame: 440, pose: LATE_CAMERA.deploy },
-  { frame: 455, pose: LATE_CAMERA.checkpoint },
-  { frame: 475, pose: LATE_CAMERA.checkpoint },
-  { frame: 500, pose: LATE_CAMERA.failure },
-  { frame: 620, pose: LATE_CAMERA.failure },
-  { frame: 640, pose: LATE_CAMERA.retry },
-  { frame: 760, pose: LATE_CAMERA.retry },
+  { frame: 80, pose: LATE_CAMERA.overview },
   { frame: 810, pose: LATE_CAMERA.overview },
   { frame: LATE_DURATION - 1, pose: LATE_CAMERA.overview },
 ];

@@ -53,6 +53,7 @@ export const LateFailure: React.FC<OnePromptVideoProps> = (props) => {
             nodes={lateFailureWorkflowGraph.nodes}
             state={state}
             frame={frame}
+            timingScale={merged.timingScale}
             variant="late"
           />
         ) : null}
